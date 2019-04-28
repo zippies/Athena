@@ -1,0 +1,6 @@
+logs/app.log
+env
+*.pyc
+__cache__
+.idea
+.git

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>智能评分项目</title>
+</head>
+<body>
+<div class="container" style="font-family: Arial,Helvetica,'Hiragino Sans GB','Microsoft Yahei','微软雅黑',sans-serif;font-size:14px;">
+    <table style="background: #f4f4f4; padding: 0px; font-family: Arial,Helvetica,'Hiragino Sans GB','Microsoft Yahei','微软雅黑',sans-serif;line-height:28px; height:100%;  width: 100%; color: #514d6a;">
+        <tbody>
+        <tr>
+            <td width="100%" style="background-color: {% if score > 70 %}#4d9a2c{% else %}#f37676{% endif %}; padding:20px; color:#fff; text-align:center;font-size:16px;">项目名：{{ project_name }}  &nbsp&nbsp&nbsp分支：{{ branch }}  &nbsp&nbsp&nbsp提交人：{{ commiter }}{% if score%}  &nbsp&nbsp&nbsp代码质量评分：<a href="http://team.caimi-inc.com/pages/viewpage.action?pageId=11667561" style="font-size:20px;font-weight:bold">{{ score }}</a>{% endif %}</td>
+        </tr>
+    </table>
+    <div>
+        <h2><a href="http://172.16.47.68:9000/component_issues/?id={{ project_name }}:{{ branch }}">静态代码扫描</a></h2><small>专注每一个代码细节（以下数据仅供代码自检）</small>
+        <hr>
+        <span style="display: inline;padding: .2em .6em .3em;font-size: 75%;font-weight: bold;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;border-radius: .25em;background-color: #337ab7;">质量总览</span>
+        <div style="padding:20px">
+            <table style="border-spacing:0;border-collapse:collapse;width:100%" border=1>
+                <thead style="display: table-header-group;">
+                    <tr style="text-align:center">
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">bugs</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">漏洞数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">坏味道</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">违规数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">代码行数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">新增bug</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">新增漏洞数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">新增坏味道</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">新增违规数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">新增行数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align:center">
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ bugs }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ vulnerabilities }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ code_smells }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ violations }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ code_lines }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ new_bugs }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ new_vulnerabilities }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ new_code_smells }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ new_violations }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ new_lines }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span style="display: inline;padding: .2em .6em .3em;font-size: 75%;font-weight: bold;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;border-radius: .25em;background-color: #d9534f;">负债数排行榜</span>
+        <div style="padding:20px">
+            <table style="border-spacing:0;border-collapse:collapse;width:100%" border=1>
+                <thead>
+                    <tr style="text-align:center">
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">排名</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">开发同学</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">阻断债务</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">严重债务</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">主要债务</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">次要债务</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">负债总数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">Talk is cheap</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ranker in rank_list %}
+                    <tr style="text-align:center">
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ranker.rank }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ranker.name }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ranker.blocks }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ranker.criticals }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ranker.majors }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ranker.minors }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ranker.all }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;"><a href="http://172.16.47.68:9000/component_issues/index?id={{ project_name }}%3A{{ branch }}#resolved=false|authors={{ ranker.name }}%40company.com">Show me the code</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div>
+        <h2><a href="{{ ut_report_url }}">单元测试结果</a></h2><small style="text-align:center">18年订个小目标 — 单测覆盖率超过75%</small>
+        <hr>
+        <div style="padding:20px">
+            <table style="border-spacing:0;border-collapse:collapse;width:100%" border=1>
+                <thead>
+                    <tr style="text-align:center">
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">案例总数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">失败数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">通过数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">跳过数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">行覆盖率</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">分支覆盖率</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">类覆盖度</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ut_judgement[0] }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align:center;">
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: middle;border-top: 1px solid #ddd;">{{ ut_totalcount }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: middle;border-top: 1px solid #ddd;{% if ut_failcount %}color:red;{% endif %}">{{ ut_failcount }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: middle;border-top: 1px solid #ddd;">{{ ut_passcount }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: middle;border-top: 1px solid #ddd;">{{ ut_skipcount }}</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: middle;border-top: 1px solid #ddd;">{{ ut_line_cover}}%</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: middle;border-top: 1px solid #ddd;">{{ ut_branch_cover }}%</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: middle;border-top: 1px solid #ddd;">{{ ut_class_cover }}%</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: middle;border-top: 1px solid #ddd;"><a href="http://team.caimi-inc.com/pages/viewpage.action?pageId=11667566" style="color:#C1FFC1"><img src="{{ runtime_host }}/judgement/{{ ut_judgement[1] }}" height="100" width="100" alt="{{ ut_judgement[0] }}" /></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h2><a href="http://10.1.2.3:8080/sonarqube">自动化接口测试</a></h2>
+        <hr>
+        <div style="padding:20px">
+            <table style="border-spacing:0;border-collapse:collapse;width:100%" border=1>
+                <thead>
+                    <tr style="text-align:center">
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">案例总数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">失败数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">成功数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">跳过数</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">成功率</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">持续时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align:center">
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">128</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">3</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">110</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">15</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">97.3</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">220s</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h2><a href="http://10.1.2.3:8080/sonarqube">自动化性能测试</a></h2>
+        <hr>
+        <div style="padding:20px">
+            <table style="border-spacing:0;border-collapse:collapse;width:100%" border=1>
+                <thead>
+                    <tr style="text-align:center">
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">描述</th>
+                        <th style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">地址链接</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align:center">
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;width:20%;">本次提交性能</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;width:80%;"></td>
+                    </tr>
+                    <tr style="text-align:center">
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;width:20%;">历史性能对比</td>
+                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;width:80%;"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
